@@ -84,7 +84,8 @@
           <t-link v-else href="https://qa.vicicode.cn/" target="_blank">{{ $t('navbar.qa') }}</t-link>
         </li>
         <li>
-          <a-button v-show="route.path !== '/tool/flash'" type="primary" @click="connectIt">{{ appStore.connectState ? $t('navbar.disconnect') : $t('navbar.connect') }}</a-button>
+          <a-button v-show="route.path !== '/tool/flash' && route.path !== '/idea/firmware'" type="primary" @click="connectIt">{{ appStore.connectState ? $t('navbar.disconnect') : $t('navbar.connect') }}</a-button>
+          <a-button disabled="disabled" title="刷机模式无需连接" v-show="route.path == '/tool/flash' || route.path == '/idea/firmware'" type="primary" @click="connectIt">{{ appStore.connectState ? $t('navbar.disconnect') : $t('navbar.connect') }}</a-button>
         </li>
         <li>
           <a-tooltip :content="$t('settings.language')">
@@ -167,7 +168,7 @@
   import { Message } from '@arco-design/web-vue';
   import { useRoute } from 'vue-router';
   import { useDark, useToggle, useFullscreen } from '@vueuse/core';
-  import { useAppStore, useUserStore } from '@/store';
+  import { useAppStore } from '@/store';
   import { LOCALE_OPTIONS } from '@/locale';
   import useLocale from '@/hooks/locale';
   import useUser from '@/hooks/user';
@@ -178,7 +179,6 @@
   const drivers = import.meta.glob('@/drivers/*.json', { eager: true });
 
   const appStore = useAppStore();
-  const userStore = useUserStore();
   const route = useRoute();
 
   const { logout } = useUser();
@@ -229,6 +229,7 @@
     "L_BL[0-9][0-9][0-9]": "losehubl.json",
     "LOSEHU.*P.*K"       : "ltsk.json",
     "LOSEHU.*P.*"        : "lts.json",
+    "LOSEHU.*D"          : "losehud.json",
     "LOSEHU13[0-9].*HS"   : "losehu124h.json",
     "LOSEHU13[0-9].*H"   : "losehu124h.json",
     "LOSEHU13[0-9].*KS"   : "losehu120k.json",
@@ -298,6 +299,7 @@
         "H": false,
         "localmdc": false,
         "sat": false,
+        "sat2": false,
         "newpinyin": false,
         'fm30': false
       }
